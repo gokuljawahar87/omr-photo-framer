@@ -72,8 +72,8 @@ if uploaded_file:
     line2 = f"{ordinal(session)} Session – {date}"
 
     try:
-        font_big = ImageFont.truetype("arial.ttf",130)
-        font_small = ImageFont.truetype("arial.ttf",105)
+        font_big = ImageFont.truetype("Nirmala.ttf",130)
+	font_small = ImageFont.truetype("Nirmala.ttf",105)
     except:
         font_big = ImageFont.load_default()
         font_small = ImageFont.load_default()
