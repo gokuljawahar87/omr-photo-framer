@@ -15,20 +15,23 @@ session = st.number_input("Session Number", min_value=1, step=1)
 FRAME_TOP = 210
 FRAME_BOTTOM = 210
 
-# Auto-download models if not present
-if not os.path.exists("yolov8n-face.pt"):
-    with st.spinner("Downloading face model... (one time only)"):
-        urllib.request.urlretrieve(
-            "https://huggingface.co/arnabdhar/YOLOv8-Face-Detection/resolve/main/model.pt",
-            "yolov8n-face.pt"
-        )
+# Auto-download models if not present or file is too small (corrupted)
+def download_if_needed(path, url, min_size_mb=1):
+    file_ok = os.path.exists(path) and os.path.getsize(path) > min_size_mb * 1024 * 1024
+    if not file_ok:
+        if os.path.exists(path):
+            os.remove(path)  # remove corrupted file
+        urllib.request.urlretrieve(url, path)
 
-if not os.path.exists("yolov8n.pt"):
-    with st.spinner("Downloading person model... (one time only)"):
-        urllib.request.urlretrieve(
-            "https://github.com/ultralytics/assets/releases/download/v0.0.0/yolov8n.pt",
-            "yolov8n.pt"
-        )
+with st.spinner("Loading models... (first run may take a minute)"):
+    download_if_needed(
+    "yolov8n-face.pt",
+    "https://github.com/lindevs/yolov8-face/releases/latest/download/yolov8n-face-lindevs.pt"
+)
+    download_if_needed(
+        "yolov8n.pt",
+        "https://github.com/ultralytics/assets/releases/download/v0.0.0/yolov8n.pt"
+    )
 
 @st.cache_resource
 def load_face_model():
