@@ -3,31 +3,9 @@ from PIL import Image, ImageDraw, ImageFont
 from datetime import datetime
 from io import BytesIO
 import numpy as np
-from ultralytics import YOLO
 import urllib.request
 import os
-
-# Auto-download models if not present
-if not os.path.exists("yolov8n-face.pt"):
-    with st.spinner("Downloading face model..."):
-        urllib.request.urlretrieve(
-            "https://huggingface.co/arnabdhar/YOLOv8-Face-Detection/resolve/main/model.pt",
-            "yolov8n-face.pt"
-        )
-
-if not os.path.exists("yolov8n.pt"):
-    with st.spinner("Downloading person model..."):
-        urllib.request.urlretrieve(
-            "https://github.com/ultralytics/assets/releases/download/v0.0.0/yolov8n.pt",
-            "yolov8n.pt"
-        )
-```
-
-Also **remove** `yolov8n-face.pt` and `yolov8n.pt` from your GitHub repo if they're there — large binary files cause corruption when pushed to GitHub. The app will download them fresh on first run.
-
-Then add this to your `.gitignore`:
-```
-*.pt
+from ultralytics import YOLO
 
 st.title("OMR Dreamers Photo Framer")
 
@@ -37,6 +15,20 @@ session = st.number_input("Session Number", min_value=1, step=1)
 FRAME_TOP = 210
 FRAME_BOTTOM = 210
 
+# Auto-download models if not present
+if not os.path.exists("yolov8n-face.pt"):
+    with st.spinner("Downloading face model... (one time only)"):
+        urllib.request.urlretrieve(
+            "https://huggingface.co/arnabdhar/YOLOv8-Face-Detection/resolve/main/model.pt",
+            "yolov8n-face.pt"
+        )
+
+if not os.path.exists("yolov8n.pt"):
+    with st.spinner("Downloading person model... (one time only)"):
+        urllib.request.urlretrieve(
+            "https://github.com/ultralytics/assets/releases/download/v0.0.0/yolov8n.pt",
+            "yolov8n.pt"
+        )
 
 @st.cache_resource
 def load_face_model():
@@ -48,7 +40,6 @@ def load_person_model():
 
 face_model   = load_face_model()
 person_model = load_person_model()
-
 
 # -------------------------
 # Ordinal function
