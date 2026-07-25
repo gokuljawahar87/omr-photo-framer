@@ -26,6 +26,7 @@ def download_if_needed(path, url, min_size_mb=1):
             os.remove(path)
         urllib.request.urlretrieve(url, path)
 
+# ✅ Correct
 with st.spinner("Loading models... (first run may take a minute)"):
     download_if_needed(
         "yolov8n-face.pt",
@@ -35,15 +36,9 @@ with st.spinner("Loading models... (first run may take a minute)"):
         "yolov8n.pt",
         "https://github.com/ultralytics/assets/releases/download/v0.0.0/yolov8n.pt"
     )
-# ✅ Download Barlow Condensed fonts to match frame design
     download_if_needed(
         "BarlowCondensed-ExtraBold.ttf",
         "https://github.com/google/fonts/raw/main/ofl/barlowcondensed/BarlowCondensed-ExtraBold.ttf",
-        min_size_mb=0.05
-    )
-    download_if_needed(
-        "BarlowCondensed-Bold.ttf",
-        "https://github.com/google/fonts/raw/main/ofl/barlowcondensed/BarlowCondensed-Bold.ttf",
         min_size_mb=0.05
     )
     download_if_needed(
@@ -54,6 +49,11 @@ with st.spinner("Loading models... (first run may take a minute)"):
     download_if_needed(
         "BarlowCondensed-Italic.ttf",
         "https://github.com/google/fonts/raw/main/ofl/barlowcondensed/BarlowCondensed-Italic.ttf",
+        min_size_mb=0.05
+    )
+    download_if_needed(
+        "BarlowCondensed-Bold.ttf",
+        "https://github.com/google/fonts/raw/main/ofl/barlowcondensed/BarlowCondensed-Bold.ttf",
         min_size_mb=0.05
     )
 @st.cache_resource
